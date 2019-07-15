@@ -28,18 +28,18 @@ frame:RegisterEvent("PLAYER_ENTERING_WORLD")
 
 frame:SetScript("OnEvent", function(self, event, arg1)
     if event == "ADDON_LOADED" and arg1 == "AoADiceWars" then
-	if not AoADiceWarsDB then AoADiceWarsDB = {} end;
-	-- Delaying execution of setup until AoADiceWarsDB exists
-	self:SetUpStuff();
+		if not AoADiceWarsDB then AoADiceWarsDB = {} end;
+		-- Delaying execution of setup until AoADiceWarsDB exists
+		self:SetUpStuff();
 	end
 --Ask Blizz how many players are in the group. If we or a group member leave or join a group, update the text accordingly.
-		if event == "GROUP_JOINED" or event == "GROUP_LEFT" or event == "GROUP_ROSTER_UPDATE" or event == "PLAYER_ENTERING_WORLD"
-			then 
-				self.data.IsInGroup = IsInGroup()
-				self.data.IsInRaid = IsInRaid()
-				self.data.GroupMembers = GetNumGroupMembers(LE_PARTY_CATEGORY_HOME)
-				self.memberCount:SetText("There are " .. self.data.GroupMembers .. " players in your group!")	
-				ISwearImInAGroup(); --change our text based on what kind of group we're in
+	if event == "GROUP_JOINED" or event == "GROUP_LEFT" or event == "GROUP_ROSTER_UPDATE" or event == "PLAYER_ENTERING_WORLD"
+	then 
+		self.data.IsInGroup = IsInGroup()
+		self.data.IsInRaid = IsInRaid()
+		self.data.GroupMembers = GetNumGroupMembers(LE_PARTY_CATEGORY_HOME)
+		self.memberCount:SetText("There are " .. self.data.GroupMembers .. " players in your group!")	
+		ISwearImInAGroup(); --change our text based on what kind of group we're in
 	end
 end)
 
@@ -140,6 +140,21 @@ function MakeTheHealButton()
 	end
 end
 
+--If the player is using TRP3 stylize their name, otherwise just leave it
+if TRP3_API then
+    local function UpdatePlayerName()
+        local currentUser = AddOn_TotalRP3.Player.GetCurrentUser();
+        playerName = currentUser:GetRoleplayingName() or UnitName("player");
+    end
+
+    TRP3_API.events.registerCallback(TRP3_API.events.WORKFLOW_ON_FINISH, UpdatePlayerName);
+    TRP3_API.events.registerCallback(TRP3_API.events.REGISTER_DATA_UPDATED, function(id)
+        if id == TRP3_API.globals.player_id then
+            UpdatePlayerName();
+        end
+    end);
+end
+
 --When we click the button, adjust the rolls based on our role
 attackButton:SetScript("OnClick", function(self)
 	if frame.data.playerRole == "DPS" or AoADiceWarsDB.playerRole == "DPS"
@@ -148,7 +163,7 @@ attackButton:SetScript("OnClick", function(self)
 			DPSRollAdd = DPSRoll + 2
 		if DPSRoll == 19 or DPSRoll == 20
 			then  
-				SendChatMessage(playerName.. "attacks by rolling " .. DPSRoll .. " + 2 to get " ..DPSRollAdd .. "! CRITICAL HIT!", frame.data.PartyType);
+				SendChatMessage(playerName.. " attacks by rolling " .. DPSRoll .. " + 2 to get " ..DPSRollAdd .. "! CRITICAL HIT!", frame.data.PartyType);
 		else 
 			SendChatMessage(playerName.." attacks by rolling " .. DPSRoll .. " + 2 to get " ..DPSRollAdd .. "!", frame.data.PartyType);
 		end
@@ -178,7 +193,7 @@ defendButton:SetScript("OnClick", function(self)
 		then 
 			DPSRoll = math.random(20)
 		if DPSRoll == 20
-			then SendChatMessage(playerName.." defends by rolling " .. DPSRoll .. "! CRITICAL HIT!", frame.data.PartyType);
+			then SendChatMessage(playerName.." defends by rolling " .. DPSRoll .. "! CRITICAL COUNTER!", frame.data.PartyType);
 		else
 			SendChatMessage(playerName.." defends by rolling " .. DPSRoll .. "!", frame.data.PartyType);
 		end				
@@ -188,7 +203,7 @@ defendButton:SetScript("OnClick", function(self)
 			TankRollADD = TankRoll + 2
 		if TankRoll == 19 or TankRoll == 20
 			then 
-			SendChatMessage(playerName.." defends by rolling " .. TankRoll .. " + 2 to get " ..TankRollADD .. "! CRITICAL HIT!", frame.data.PartyType);
+			SendChatMessage(playerName.." defends by rolling " .. TankRoll .. " + 2 to get " ..TankRollADD .. "! CRITICAL COUNTER!", frame.data.PartyType);
 		else 
 			SendChatMessage(playerName.." defends by rolling " .. TankRoll .. " + 2 to get " ..TankRollADD .. "!", frame.data.PartyType);
 		end
@@ -196,7 +211,7 @@ defendButton:SetScript("OnClick", function(self)
 		then 
 			HealerRoll = math.random(20)
 		if HealerRoll == 20
-			then SendChatMessage(playerName.." defends by rolling " .. HealerRoll .. "! CRITICAL HIT!", frame.data.PartyType);
+			then SendChatMessage(playerName.." defends by rolling " .. HealerRoll .. "! CRITICAL COUNTER!", frame.data.PartyType);
 		else
 			SendChatMessage(playerName.." defends by rolling " .. HealerRoll .. "!", frame.data.PartyType);
 		end	
