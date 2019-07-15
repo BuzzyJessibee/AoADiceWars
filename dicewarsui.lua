@@ -7,7 +7,12 @@ local healButton = CreateFrame("Button", "HealButton", frame, "UIPanelButtonTemp
 frame.memberCount = frame:CreateFontString("memberCountString", "OVERLAY", "GameFontNormal")
 local PC_Dropdown = LibStub("PhanxConfig-Dropdown");
 local playerName = UnitName('player');
-
+local DPSRoll = 0
+local DPSRollAdd = 0
+local TankRoll = 0
+local TankRollADD = 0
+local HealerRoll = 0
+local RezRoll = 0
 
 --Make a title for the window!
 frame.TitleText:SetText("AoA Dice Wars")
@@ -93,12 +98,12 @@ HealerCount.OnValueChanged =
 HealerCount:SetWidth(100); 
 
 --Show the HealerCount dropdown if we're a healer, else hide it because we don't need it.
-	function ShowTheHealers()
-		if frame.data.playerRole == "SUPPORT" or AoADiceWarsDB.playerRole == "SUPPORT"
-		then HealerCount:Show()
-		else HealerCount:Hide()
-		end
+local function ShowTheHealers()
+	if frame.data.playerRole == "SUPPORT" or AoADiceWarsDB.playerRole == "SUPPORT"
+	then HealerCount:Show()
+	else HealerCount:Hide()
 	end
+end
 
 --Use the fontstring to show the player how many players are in the current group
 	frame.memberCount:SetWidth(200);
@@ -127,7 +132,7 @@ healButton:SetPoint("BOTTOM", 0, 10)
 
 --If we're a healer, add a heal button
 
-function MakeTheHealButton()
+local function MakeTheHealButton()
 	if frame.data.playerRole == "SUPPORT" or AoADiceWarsDB.playerRole == "SUPPORT"
 	then 
 		attackButton:SetSize(100, 22)
@@ -249,7 +254,7 @@ function SlashCmdList.VER(msg, editBox)
 end
 
 -- Delaying execution of setup until AoADiceWarsDB exists
-function frame:SetUpStuff()
+local function frame:SetUpStuff()
   PlayerRole:SetValue(AoADiceWarsDB.playerRole);
   HealerCount:SetValue(AoADiceWarsDB.healerCount);
   ShowTheHealers();
@@ -258,7 +263,7 @@ function frame:SetUpStuff()
   print("[|cFF9370DBAoA|r] If you close the window, type |cFF9370DB/aoa|r to reopen it")
 end;
 
-function HealerDiceRoll()
+local function HealerDiceRoll()
 	if AoADiceWarsDB.healerCount == 1 or frame.data.healerCount == 1 
 		then
 			if frame.data.GroupMembers <= 5 
@@ -282,7 +287,7 @@ function HealerDiceRoll()
 	end
 end
 
-function ISwearImInAGroup()
+local function ISwearImInAGroup()
 	if frame.data.IsInGroup == true and frame.data.IsInRaid == false
 	then frame.data.PartyType = "PARTY"
 	elseif frame.data.IsInRaid == true
