@@ -148,7 +148,7 @@ attackButton:SetScript("OnClick", function(self)
 			DPSRollAdd = DPSRoll + 2
 		if DPSRoll == 19 or DPSRoll == 20
 			then  
-				SendChatMessage(playerName.. "attacks by rolling " .. DPSRoll .. " + 2 to get " ..DPSRollAdd .. "! CRITICAL HIT!", frame.data.PartyType);
+				SendChatMessage(playerName.. " attacks by rolling " .. DPSRoll .. " + 2 to get " ..DPSRollAdd .. "! CRITICAL HIT!", frame.data.PartyType);
 		else 
 			SendChatMessage(playerName.." attacks by rolling " .. DPSRoll .. " + 2 to get " ..DPSRollAdd .. "!", frame.data.PartyType);
 		end
@@ -178,7 +178,7 @@ defendButton:SetScript("OnClick", function(self)
 		then 
 			DPSRoll = math.random(20)
 		if DPSRoll == 20
-			then SendChatMessage(playerName.." defends by rolling " .. DPSRoll .. "! CRITICAL HIT!", frame.data.PartyType);
+			then SendChatMessage(playerName.." defends by rolling " .. DPSRoll .. "! CRITICAL COUNTER!", frame.data.PartyType);
 		else
 			SendChatMessage(playerName.." defends by rolling " .. DPSRoll .. "!", frame.data.PartyType);
 		end				
@@ -188,7 +188,7 @@ defendButton:SetScript("OnClick", function(self)
 			TankRollADD = TankRoll + 2
 		if TankRoll == 19 or TankRoll == 20
 			then 
-			SendChatMessage(playerName.." defends by rolling " .. TankRoll .. " + 2 to get " ..TankRollADD .. "! CRITICAL HIT!", frame.data.PartyType);
+			SendChatMessage(playerName.." defends by rolling " .. TankRoll .. " + 2 to get " ..TankRollADD .. "! CRITICAL COUNTER!", frame.data.PartyType);
 		else 
 			SendChatMessage(playerName.." defends by rolling " .. TankRoll .. " + 2 to get " ..TankRollADD .. "!", frame.data.PartyType);
 		end
@@ -196,7 +196,7 @@ defendButton:SetScript("OnClick", function(self)
 		then 
 			HealerRoll = math.random(20)
 		if HealerRoll == 20
-			then SendChatMessage(playerName.." defends by rolling " .. HealerRoll .. "! CRITICAL HIT!", frame.data.PartyType);
+			then SendChatMessage(playerName.." defends by rolling " .. HealerRoll .. "! CRITICAL COUNTER!", frame.data.PartyType);
 		else
 			SendChatMessage(playerName.." defends by rolling " .. HealerRoll .. "!", frame.data.PartyType);
 		end	
