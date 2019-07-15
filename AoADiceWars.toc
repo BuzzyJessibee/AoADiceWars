@@ -1,0 +1,8 @@
+## Interface: 80200
+## Title: AoA DiceWars
+## Author: Lyranalia
+## Version: 0.1
+## SavedVariablesPerCharacter: AoADiceWarsDB
+embed\LibStub\LibStub.lua
+embed\PhanxConfig-Dropdown.lua
+dicewarsui.lua
