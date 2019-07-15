@@ -241,7 +241,7 @@ end)
 
 --Make a Slash Command so that we can open the frame again without reloading
 SLASH_AOA1 = '/aoa';
-local function SlashCmdList.AOA(msg, editBox)
+function SlashCmdList.AOA(msg, editBox)
 	if not frame:IsVisible()
 		then frame:Show()
 		else frame:Hide()
@@ -249,7 +249,7 @@ local function SlashCmdList.AOA(msg, editBox)
 end
 --Make a Slash Command so that we can print what version the user currently has in the chat
 SLASH_VER1 = '/aoaver'
-local function SlashCmdList.VER(msg, editBox)
+function SlashCmdList.VER(msg, editBox)
 	print("You're running |cFF9370DBversion 1.1 - Initial TRP Support!|r")
 end
 
