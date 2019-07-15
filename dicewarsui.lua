@@ -254,7 +254,7 @@ function SlashCmdList.VER(msg, editBox)
 end
 
 -- Delaying execution of setup until AoADiceWarsDB exists
-local function frame:SetUpStuff()
+function frame:SetUpStuff()
   PlayerRole:SetValue(AoADiceWarsDB.playerRole);
   HealerCount:SetValue(AoADiceWarsDB.healerCount);
   ShowTheHealers();
