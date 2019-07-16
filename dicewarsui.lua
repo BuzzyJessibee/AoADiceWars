@@ -31,22 +31,51 @@ frame:RegisterEvent("GROUP_LEFT")
 frame:RegisterEvent("GROUP_ROSTER_UPDATE")
 frame:RegisterEvent("PLAYER_ENTERING_WORLD")
 
+local function UpdatePlayerName()
+    if AddOn_TotalRP3 then
+        local currentUser = AddOn_TotalRP3.Player.GetCurrentUser();
+        playerName = currentUser:GetRoleplayingName();
+	elseif msp then
+		if msp.my["NA"] then
+		playerName = string.gsub(msp.my["NA"], "|cff%x%x%x%x%x%x", "")
+		end
+    end
+
+    if not playerName then
+        playerName = UnitName("player");
+    end
+end
+
 frame:SetScript("OnEvent", function(self, event, arg1)
-    if event == "ADDON_LOADED" and arg1 == "AoADiceWars" then
-		if not AoADiceWarsDB then AoADiceWarsDB = {} end;
-		-- Delaying execution of setup until AoADiceWarsDB exists
-		self:SetUpStuff();
-	end
+    if event == "ADDON_LOADED" then
+        if arg1 == "AoADiceWars" then
+            if not AoADiceWarsDB then AoADiceWarsDB = {} end;
+            -- Delaying execution of setup until AoADiceWarsDB exists
+            self:SetUpStuff();
+        elseif arg1 == "MyRolePlay" or arg1 == "XRP" then
+            UpdatePlayerName();
+            table.insert(msp.callback.received, UpdatePlayerName);
+        end
+    end
 --Ask Blizz how many players are in the group. If we or a group member leave or join a group, update the text accordingly.
-	if event == "GROUP_JOINED" or event == "GROUP_LEFT" or event == "GROUP_ROSTER_UPDATE" or event == "PLAYER_ENTERING_WORLD"
-	then 
-		self.data.IsInGroup = IsInGroup()
-		self.data.IsInRaid = IsInRaid()
-		self.data.GroupMembers = GetNumGroupMembers(LE_PARTY_CATEGORY_HOME)
-		self.memberCount:SetText("There are " .. self.data.GroupMembers .. " players in your group!")	
-		self.ISwearImInAGroup(); --change our text based on what kind of group we're in
-	end
+    if event == "GROUP_JOINED" or event == "GROUP_LEFT" or event == "GROUP_ROSTER_UPDATE" or event == "PLAYER_ENTERING_WORLD"
+    then 
+        self.data.IsInGroup = IsInGroup()
+        self.data.IsInRaid = IsInRaid()
+        self.data.GroupMembers = GetNumGroupMembers(LE_PARTY_CATEGORY_HOME)
+        self.memberCount:SetText("There are " .. self.data.GroupMembers .. " players in your group!")    
+        self.ISwearImInAGroup(); --change our text based on what kind of group we're in
+    end
 end)
+
+if TRP3_API then
+    TRP3_API.events.registerCallback(TRP3_API.events.WORKFLOW_ON_FINISH, UpdatePlayerName);
+    TRP3_API.events.registerCallback(TRP3_API.events.REGISTER_DATA_UPDATED, function(id)
+        if id == TRP3_API.globals.player_id then
+            UpdatePlayerName();
+        end
+    end);
+end
 
 --Make our frame draggable so that people can move it where they want it.
 frame:SetMovable(true)
@@ -131,7 +160,6 @@ healButton:SetText("Heal")
 healButton:SetPoint("BOTTOM", 0, 10)
 
 --If we're a healer, add a heal button
-
 function frame.MakeTheHealButton()
 	if frame.data.playerRole == "SUPPORT" or AoADiceWarsDB.playerRole == "SUPPORT"
 	then 
@@ -143,22 +171,7 @@ function frame.MakeTheHealButton()
 		defendButton:SetSize(150, 22)
 		attackButton:SetSize(150, 22)
 	end
-end
-
---If the player is using TRP3 stylize their name, otherwise just leave it
-if TRP3_API then
-    local function UpdatePlayerName()
-        local currentUser = AddOn_TotalRP3.Player.GetCurrentUser();
-        playerName = currentUser:GetRoleplayingName() or UnitName("player");
-    end
-
-    TRP3_API.events.registerCallback(TRP3_API.events.WORKFLOW_ON_FINISH, UpdatePlayerName);
-    TRP3_API.events.registerCallback(TRP3_API.events.REGISTER_DATA_UPDATED, function(id)
-        if id == TRP3_API.globals.player_id then
-            UpdatePlayerName();
-        end
-    end);
-end
+end	
 
 --When we click the button, adjust the rolls based on our role
 attackButton:SetScript("OnClick", function(self)
@@ -259,7 +272,7 @@ function frame:SetUpStuff()
   HealerCount:SetValue(AoADiceWarsDB.healerCount);
   frame.ShowTheHealers();
   frame.MakeTheHealButton();
-  print("[|cFF9370DBAoA|r] Thanks for using AoA DiceWars! You're on |cFF9370DBversion 1.2!|r");
+  print("[|cFF9370DBAoA|r] Thanks for using AoA DiceWars! You're on |cFF9370DBversion MRP!|r");
   print("[|cFF9370DBAoA|r] If you close the window, type |cFF9370DB/aoa|r to reopen it")
 end;
 
