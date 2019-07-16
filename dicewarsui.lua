@@ -259,7 +259,7 @@ function frame:SetUpStuff()
   HealerCount:SetValue(AoADiceWarsDB.healerCount);
   frame.ShowTheHealers();
   frame.MakeTheHealButton();
-  print("[|cFF9370DBAoA|r] Thanks for using AoA DiceWars! You're on |cFF9370DBversion 1.1 - Inital TRP Support!|r");
+  print("[|cFF9370DBAoA|r] Thanks for using AoA DiceWars! You're on |cFF9370DBversion 1.2!|r");
   print("[|cFF9370DBAoA|r] If you close the window, type |cFF9370DB/aoa|r to reopen it")
 end;
 
