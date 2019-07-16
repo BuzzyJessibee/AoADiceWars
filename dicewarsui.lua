@@ -6,7 +6,7 @@ local rezButton = CreateFrame("Button", "RezButton", frame, "UIPanelButtonTempla
 local healButton = CreateFrame("Button", "HealButton", frame, "UIPanelButtonTemplate")
 frame.memberCount = frame:CreateFontString("memberCountString", "OVERLAY", "GameFontNormal")
 local PC_Dropdown = LibStub("PhanxConfig-Dropdown");
-local playerName = UnitName('player');
+local playerName = UnitName('player'); --msp.my.NA or 
 local DPSRoll = 0
 local DPSRollAdd = 0
 local TankRoll = 0
@@ -131,7 +131,6 @@ healButton:SetText("Heal")
 healButton:SetPoint("BOTTOM", 0, 10)
 
 --If we're a healer, add a heal button
-
 function frame.MakeTheHealButton()
 	if frame.data.playerRole == "SUPPORT" or AoADiceWarsDB.playerRole == "SUPPORT"
 	then 
@@ -145,7 +144,7 @@ function frame.MakeTheHealButton()
 	end
 end
 
---If the player is using TRP3 stylize their name, otherwise just leave it
+--If the player is using TRP3 stylize their name
 if TRP3_API then
     local function UpdatePlayerName()
         local currentUser = AddOn_TotalRP3.Player.GetCurrentUser();
@@ -159,6 +158,16 @@ if TRP3_API then
         end
     end);
 end
+
+--If the player is using MRP, stylize their name (ily Oraibi & Katorie)
+if msp and not TRP3_API then table.insert(msp.callback.received,
+	function(u) 
+		if msp.my.NA ~= playerName
+		then playerName = msp.my.NA
+	  end;
+	end);
+end;
+	
 
 --When we click the button, adjust the rolls based on our role
 attackButton:SetScript("OnClick", function(self)

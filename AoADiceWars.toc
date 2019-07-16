@@ -3,7 +3,7 @@
 ## Author: Lyranalia
 ## Version: 0.1
 ## SavedVariablesPerCharacter: AoADiceWarsDB
-## OptionalDeps: totalRP3
+## OptionalDeps: totalRP3, MyRolePlay
 embed\LibStub\LibStub.lua
 embed\PhanxConfig-Dropdown.lua
 dicewarsui.lua
