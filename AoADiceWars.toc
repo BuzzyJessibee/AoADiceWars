@@ -1,9 +1,9 @@
 ## Interface: 80200
 ## Title: AoA DiceWars
 ## Author: Lyranalia
-## Version: 0.1
+## Version: 1.2
 ## SavedVariablesPerCharacter: AoADiceWarsDB
-## OptionalDeps: totalRP3, MyRolePlay
+## OptionalDeps: totalRP3
 embed\LibStub\LibStub.lua
 embed\PhanxConfig-Dropdown.lua
 dicewarsui.lua
