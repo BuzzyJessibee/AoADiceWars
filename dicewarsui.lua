@@ -263,7 +263,7 @@ end
 --Make a Slash Command so that we can print what version the user currently has in the chat
 SLASH_VER1 = '/aoaver'
 function SlashCmdList.VER(msg, editBox)
-	print("You're running |cFF9370DBversion 1.1 - Initial TRP Support!|r")
+	print("You're running |cFF9370DBversion 1.2 - MRP Support!|r")
 end
 
 -- Delaying execution of setup until AoADiceWarsDB exists
@@ -272,7 +272,7 @@ function frame:SetUpStuff()
   HealerCount:SetValue(AoADiceWarsDB.healerCount);
   frame.ShowTheHealers();
   frame.MakeTheHealButton();
-  print("[|cFF9370DBAoA|r] Thanks for using AoA DiceWars! You're on |cFF9370DBversion MRP!|r");
+  print("[|cFF9370DBAoA|r] Thanks for using AoA DiceWars! You're on |cFF9370DBversion 1.2 - MRP Support!|r");
   print("[|cFF9370DBAoA|r] If you close the window, type |cFF9370DB/aoa|r to reopen it")
 end;
 
