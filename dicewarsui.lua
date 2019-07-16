@@ -44,7 +44,7 @@ frame:SetScript("OnEvent", function(self, event, arg1)
 		self.data.IsInRaid = IsInRaid()
 		self.data.GroupMembers = GetNumGroupMembers(LE_PARTY_CATEGORY_HOME)
 		self.memberCount:SetText("There are " .. self.data.GroupMembers .. " players in your group!")	
-		ISwearImInAGroup(); --change our text based on what kind of group we're in
+		self.ISwearImInAGroup(); --change our text based on what kind of group we're in
 	end
 end)
 
@@ -76,8 +76,8 @@ PlayerRole.OnValueChanged =
 	frame.data.playerRole = value
 	AoADiceWarsDB.playerRole = value
     print("Congrats! You are now a "  .. frame.data.playerRole or "nothing?! Dork" .. ".");
-	ShowTheHealers()
-	MakeTheHealButton();
+	frame.ShowTheHealers()
+	frame.MakeTheHealButton();
   end;
 PlayerRole:SetWidth(100);
   
@@ -98,7 +98,7 @@ HealerCount.OnValueChanged =
 HealerCount:SetWidth(100); 
 
 --Show the HealerCount dropdown if we're a healer, else hide it because we don't need it.
-local function ShowTheHealers()
+function frame.ShowTheHealers()
 	if frame.data.playerRole == "SUPPORT" or AoADiceWarsDB.playerRole == "SUPPORT"
 	then HealerCount:Show()
 	else HealerCount:Hide()
@@ -132,7 +132,7 @@ healButton:SetPoint("BOTTOM", 0, 10)
 
 --If we're a healer, add a heal button
 
-local function MakeTheHealButton()
+function frame.MakeTheHealButton()
 	if frame.data.playerRole == "SUPPORT" or AoADiceWarsDB.playerRole == "SUPPORT"
 	then 
 		attackButton:SetSize(100, 22)
@@ -233,7 +233,7 @@ end)
 healButton:SetScript("OnClick", function(self)
 	if frame.data.playerRole == "SUPPORT" or AoADiceWarsDB.playerRole == "SUPPORT"
 	then 
-		HealerDiceRoll();
+		frame.HealerDiceRoll();
 	else
 		print("No one should see this");
 	end
@@ -257,13 +257,13 @@ end
 function frame:SetUpStuff()
   PlayerRole:SetValue(AoADiceWarsDB.playerRole);
   HealerCount:SetValue(AoADiceWarsDB.healerCount);
-  ShowTheHealers();
-  MakeTheHealButton();
+  frame.ShowTheHealers();
+  frame.MakeTheHealButton();
   print("[|cFF9370DBAoA|r] Thanks for using AoA DiceWars! You're on |cFF9370DBversion 1.1 - Inital TRP Support!|r");
   print("[|cFF9370DBAoA|r] If you close the window, type |cFF9370DB/aoa|r to reopen it")
 end;
 
-local function HealerDiceRoll()
+function frame.HealerDiceRoll()
 	if AoADiceWarsDB.healerCount == 1 or frame.data.healerCount == 1 
 		then
 			if frame.data.GroupMembers <= 5 
@@ -287,7 +287,7 @@ local function HealerDiceRoll()
 	end
 end
 
-local function ISwearImInAGroup()
+function frame.ISwearImInAGroup()
 	if frame.data.IsInGroup == true and frame.data.IsInRaid == false
 	then frame.data.PartyType = "PARTY"
 	elseif frame.data.IsInRaid == true
