@@ -5,6 +5,7 @@ local defendButton = CreateFrame("Button", "DefendButton", frame, "UIPanelButton
 local rezButton = CreateFrame("Button", "RezButton", frame, "UIPanelButtonTemplate")
 local healButton = CreateFrame("Button", "HealButton", frame, "UIPanelButtonTemplate")
 frame.memberCount = frame:CreateFontString("memberCountString", "OVERLAY", "GameFontNormal")
+frame.selfhealMessage = frame:CreateFontString("selfhealString", "OVERLAY", "GameFontNormal")
 local PC_Dropdown = LibStub("PhanxConfig-Dropdown");
 local playerName = UnitName('player');
 local DPSRoll = 0
@@ -135,17 +136,21 @@ function frame.ShowTheHealers()
 end
 
 --Use the fontstring to show the player how many players are in the current group
-	frame.memberCount:SetWidth(200);
+frame.memberCount:SetWidth(200);
+frame.memberCount:SetPoint("TOP", frame, "TOP", 0, -30);
 
-	frame.memberCount:SetPoint("TOP", frame, "TOP", 0, -30);
-	
+--Use the fontstring to give a short message about self healing to the player
+frame.selfhealMessage:SetText("You can only self-heal & revive if you can ICly!");
+frame.selfhealMessage:SetWidth(250);
+frame.selfhealMessage:SetPoint("BOTTOM", frame, "BOTTOM", 0, 70);
+
 --Make The Attack Button
-attackButton:SetSize(150, 22)
+attackButton:SetSize(100, 22)
 attackButton:SetPoint("BOTTOMLEFT", 10,10)
 attackButton:SetText("Attack")
 
 --Make The Defend Button
-defendButton:SetSize(150, 22)
+defendButton:SetSize(100, 22)
 defendButton:SetPoint("BOTTOMRIGHT", -10,10)
 defendButton:SetText("Defend")
 
@@ -163,13 +168,11 @@ healButton:SetPoint("BOTTOM", 0, 10)
 function frame.MakeTheHealButton()
 	if frame.data.playerRole == "SUPPORT" or AoADiceWarsDB.playerRole == "SUPPORT"
 	then 
-		attackButton:SetSize(100, 22)
-		defendButton:SetSize(100, 22)
-		healButton:Show()
+		healButton:SetText("Heal")
+		frame.selfhealMessage:Hide()		
 	else
-		healButton:Hide()
-		defendButton:SetSize(150, 22)
-		attackButton:SetSize(150, 22)
+		healButton:SetText("Self-Heal")
+		frame.selfhealMessage:Show()
 	end
 end	
 
@@ -248,7 +251,7 @@ healButton:SetScript("OnClick", function(self)
 	then 
 		frame.HealerDiceRoll();
 	else
-		print("No one should see this");
+		frame.SelfHealDiceRoll();
 	end
 end)
 
@@ -263,7 +266,7 @@ end
 --Make a Slash Command so that we can print what version the user currently has in the chat
 SLASH_VER1 = '/aoaver'
 function SlashCmdList.VER(msg, editBox)
-	print("You're running |cFF9370DBversion 1.2 - MRP Support!|r")
+	print("You're running |cFF9370DBversion 1.3 - Self-Heals FTW!|r")
 end
 
 -- Delaying execution of setup until AoADiceWarsDB exists
@@ -272,7 +275,7 @@ function frame:SetUpStuff()
   HealerCount:SetValue(AoADiceWarsDB.healerCount);
   frame.ShowTheHealers();
   frame.MakeTheHealButton();
-  print("[|cFF9370DBAoA|r] Thanks for using AoA DiceWars! You're on |cFF9370DBversion 1.2 - MRP Support!|r");
+  print("[|cFF9370DBAoA|r] Thanks for using AoA DiceWars! You're on |cFF9370DBversion 1.3 - Self-Heals FTW!|r");
   print("[|cFF9370DBAoA|r] If you close the window, type |cFF9370DB/aoa|r to reopen it")
 end;
 
@@ -297,6 +300,13 @@ function frame.HealerDiceRoll()
 			SendChatMessage(playerName.." rolled " .. HealerRoll .. " points for healing!", frame.data.PartyType);
 					
 	else print("Please enter a number of healers!")
+	end
+end
+
+function frame.SelfHealDiceRoll()
+	if frame.data.playerRole == "DPS" or AoADiceWarsDB.playerRole == "DPS" or frame.data.playerRole == "TANK" or AoADiceWarsDB.playerRole == "TANK"
+	then HealerRoll = math.random(1,3)
+		SendChatMessage(playerName.." rolled " .. HealerRoll .. " points for self-healing!", frame.data.PartyType);
 	end
 end
 
